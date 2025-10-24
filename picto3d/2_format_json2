@@ -1,0 +1,17 @@
+Based on the following description, generate a JSON object that represents the scene for 3D printing.
+
+Description: "%s"
+
+Use this JSON schema:
+{
+  "shapes": [
+    {
+      "type": "cube" | "sphere" | "cylinder" | "cone", // The type of primitive shape.
+      "position": [x, y, z], // The center position of the shape.
+      "rotation": [x, y, z], // Euler angle rotation in degrees around each axis.
+      "dimensions": [width, height, depth] // Dimensions of the shape. For a sphere, only the first value (diameter) is used. For a cylinder or cone, the first is diameter and second is height.
+    }
+  ]
+}
+
+Only output the raw JSON object, without any surrounding text or markdown formatting. Ensure all values are numbers, not strings.
