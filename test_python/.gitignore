@@ -1,0 +1,9 @@
+/*.xlsx
+/*.csv
+/*.ods
+/*.pdf
+/oldstatements
+/oldcsv
+/budget
+/venv
+/__pycache__
