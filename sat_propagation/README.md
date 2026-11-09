@@ -1,26 +1,40 @@
-# Satellite Propagation and Collision Analysis
+# Satellite conjunction screening
 
-This project analyzes satellite propagation from 3LE data from space-track.org to warn if there is a chance of collision for in-operation satellites.
+Warns when satellites you care about may pass close to any other tracked object. It does two things:
+
+1. **SGP4 screening.** It downloads the current Space-Track GP catalog (OMM JSON), then propagates your satellites and every object whose altitude band overlaps theirs on a 60 s grid. Each approach is refined to its exact time of closest approach (TCA). For every approach under the screening distance, it reports the TCA, the miss distance split into radial, in-track and cross-track parts, the relative speed and the TLE age.
+2. **Space-Track warnings.** It lists upcoming public conjunction data messages (`cdm_public`) for your satellites. These come from the 18th Space Defense Squadron's covariance-based screening and include collision probability (Pc).
+
+TLEs have no covariance. Their positions are about 1 km off at epoch and drift a few km per day, so step 1 finds *candidates*. The CDMs in step 2 are the authoritative warnings, and step 1 is an independent check on them.
 
 ## Setup
 
-1.  **Install dependencies:**
+```bash
+python -m venv .venv
+.venv/Scripts/python -m pip install -r requirements-dev.txt   # macOS/Linux: .venv/bin/python
+```
 
-    ```bash
-    pip install -r requirements.txt
-    ```
+You need a free [space-track.org](https://www.space-track.org) account. Pass the login through environment variables, never in code:
 
-2.  **Configure the project:**
-
-    - Open `src/config.py` and enter your space-track.org credentials (`SPACE_TRACK_USER` and `SPACE_TRACK_PASSWORD`).
-    - In the same file, define the `SATELLITES_OF_INTEREST` list with the NORAD IDs of the satellites you want to track.
+```bash
+export SPACETRACK_USER="you@example.com"
+export SPACETRACK_PASSWORD="..."
+```
 
 ## Usage
 
-To run the collision analysis, execute the `main.py` script:
-
 ```bash
-python -m src.main
+python -m src.main 25544 48274 --days 3 --distance 5
 ```
 
-The script will fetch the latest TLE data, propagate the satellite orbits, and print any potential collisions to the console.
+- `norad_ids`: the satellites to protect.
+- `--days`: screening window, 1 by default.
+- `--distance`: miss distance to report in km, 5 by default.
+
+Other defaults live in `src/config.py`. The catalog is cached in `cache/` for an hour, because Space-Track asks clients to pull it at most hourly. A day of screening against the full catalog (~30k objects) takes a few seconds.
+
+## Tests
+
+```bash
+python -m pytest
+```
