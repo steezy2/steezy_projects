@@ -13,7 +13,7 @@ This repository is a personal playground containing a variety of sample apps, ut
 - `finance_python/` — Budgeting and finance-related Python scripts and example CSV data. Contains utilities for parsing CSV statements, generating pie charts, and simple budget tracking. See `finance_python/reqs.txt` for Python dependencies.
 - `picto3d/` — Go projects and experiments related to geometry and small 3D/pictograph utilities. Contains `main.go`, tests, and supporting libraries.
 - `python-mini-projects/` — A large collection of small Python projects and one-off scripts. Each subproject may include its own README or requirements file.
-- `sat_propagation/` — Satellite propagation related code and experiments with its own `requirements.txt` and `src/` folder.
+- `sat_propagation/` — Satellite conjunction screening against the Space-Track catalog (SGP4 + public CDMs); see its README.
 
 ## How to explore
 

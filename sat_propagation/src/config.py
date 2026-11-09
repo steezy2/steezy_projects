@@ -1,20 +1,17 @@
-# config.py
+"""Screening defaults and Space-Track settings."""
 
-# Space-Track.org credentials
-SPACE_TRACK_USER = "your_email@example.com"
-SPACE_TRACK_PASSWORD = "your_password"
+from pathlib import Path
 
-# URL for space-track.org TLE query
 SPACE_TRACK_URL = "https://www.space-track.org"
+REQUEST_TIMEOUT_S = 120  # the full catalog is ~20 MB
 
-# Satellites of interest (NORAD IDs)
-SATELLITES_OF_INTEREST = [
-    # Example: Starlink satellites
-    # You can get these from celestrak.com or space-track.org
-]
+# Space-Track asks clients to download the full GP catalog at most once per hour.
+CATALOG_CACHE = Path(__file__).resolve().parent.parent / "cache" / "gp_catalog.json"
+CATALOG_MAX_AGE_S = 3600
 
-# Time parameters for propagation (in days)
-PROPAGATION_TIME = 1  # Propagate for 1 day
-
-# Collision threshold (in km)
-COLLISION_THRESHOLD = 1.0
+SCREENING_DAYS = 1.0
+# TLE positions are ~1 km off at epoch and drift a few km per day, so screen wider than that.
+SCREENING_DISTANCE_KM = 5.0
+COARSE_STEP_S = 60.0
+# Mean-element apogee/perigee differ from the true orbital radius by tens of km.
+ALTITUDE_PAD_KM = 50.0
